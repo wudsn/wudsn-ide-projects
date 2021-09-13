@@ -1,1 +1,1 @@
-"# wudsn-ide-workspace" 
+WUDSN IDE Example Workspace
