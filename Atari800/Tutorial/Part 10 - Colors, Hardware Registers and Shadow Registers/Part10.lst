@@ -1,0 +1,27 @@
+mads 1.9.9
+Source: C:\jac\wudsn\Workspace\Atari800\Tutorial\Part 10 - Colors, Hardware Registers and Shadow Registers\Part10.asm
+     1 				;	$d000-$d0ff GTIA (pixel, color, sprites/player/missle, consol, beep)
+     2 				;	$d200-$d2ff POKEY (paddle, keyboard, SIO, audio)
+     3 				;	$d400-$d4ff ANTIC (DMA feed GITA with data)
+     4
+     5 					org $2000
+     6
+     7 = 02C4			color0  = $2c4
+     8 = 02C6			color2  = $2c6
+     9 = 02C8			color4	= $2c8	;Shadow of colbk
+    10
+    11 = D017			colpf1	= $d017
+    12 = D018			colpf2	= $d018
+    13 = D01A			colbk	= $d01a
+    14
+    15 					.proc main
+    16
+    17 FFFF> 2000-200C> A9 38		lda #$38
+    18 2002 8D C8 02			sta color4
+    19
+    20 2005 A5 14		loop	lda $14
+    21 2007 8D C6 02			sta color2
+    22 200A 4C 05 20			jmp loop
+    23 					.endp
+    24 					
+    25 02E0-02E1> 00 20			run main

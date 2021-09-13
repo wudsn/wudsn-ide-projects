@@ -1,0 +1,53 @@
+mads 1.9.9
+Source: C:\jac\wudsn\Workspace\Atari800\Tutorial\Part 12 - Display List Memory and Scrolling\Part12.asm
+     1
+     2 					org $2000
+     3
+     4 FFFF> 2000-208C> A9 25 + start	mwa #dl $230		;Set Display List pointer
+     5
+     6 200A A5 14		loop	lda 20
+     7 200C 29 03			and #3			;0,1,2,3,0,..
+     8 200E 49 03			eor #3			;3,2,1,0,3,...
+     9 2010 8D 04 D4			sta $d404		;Set horizontal soft scroll position
+    10
+    11 2013 A5 14			lda 20
+    12 2015 29 03			and #3			;0,1,2,3,0,..
+    13 2017 D0 03			bne skip_inc		;Only increment on "0"
+    14 2019 EE 37 20			inc dl.lms+1		;Increment low byte of LMS address
+    15 201C			skip_inc
+    16 201C A5 14			lda 20			;Incremented every 50th of a second by VBI
+    17 201E C5 14		wait	cmp 20
+    18 2020 F0 FC			beq wait
+    19
+    20 2022 4C 0A 20			jmp loop
+    21
+    22 2025				.local dl
+    23 2025 70 70 70			.byte $70,$70,$70	;3x8 empty scanlines
+    24 2028 70 70 70			.byte $70,$70,$70
+    25 202B 70 70 70			.byte $70,$70,$70
+    26 202E 47 3C 20			.byte $47,a(sm)
+    27 2031 70				.byte $70
+    28 2032 06				.byte $06
+    29 2033 70				.byte $70
+    30 2034 02				.byte $02
+    31 2035 70				.byte $70
+    32 2036 52 00 21		lms	.byte $52,a(scroller)
+    33 2039 41 25 20			.byte $41,a(dl)		;Wait VBL, jump DL
+    34 					.endl
+    35
+    36 203C				.local sm
+    37 203C 00 00 00 00 28 25 + 	.byte "    HELLO WORLD     "
+    38 2050 00 00 00 61 00 64 + 	.byte "   a display list   "
+    39 2064 21 00 76 65 72 79 + 	.byte "A very long text line with a lot of text "	
+    40 					.endl
+    41
+    42 208D				.align $100
+    43 2100				.local scroller
+    44 2100-21F7> 00 00 00 00 + 	.byte "                                        "
+    45 2128 21 00 76 65 72 79 + 	.byte "A very long scroll text line with a lot of scroll text  "
+    46 2160 21 00 76 65 72 79 + 	.byte "A very long scroll text line with a lot of scroll text  "
+    47 2198 21 00 76 65 72 79 + 	.byte "A very long scroll text line with a lot of scroll text  "
+    48 21D0 00 00 00 00 00 00 + 	.byte "                                        "
+    49 					.endl
+    50
+    51 02E0-02E1> 00 20			run start

@@ -1,0 +1,27 @@
+mads 1.9.9
+Source: C:\jac\wudsn\Workspace\Atari800\Tutorial\Part 11 - Display List Basics\Part11.asm
+     1
+     2 					org $2000
+     3
+     4 FFFF> 2000-2070> A9 0D + start	mwa #dl $230		;Set Display List pointer
+     5 200A 4C 0A 20			jmp *
+     6
+     7 200D				.local dl
+     8 200D 70 70 70			.byte $70,$70,$70	;3x8 empty scanlines
+     9 2010 70 70 70			.byte $70,$70,$70
+    10 2013 70 70 70			.byte $70,$70,$70
+    11 2016 47 20 20			.byte $47,a(sm)
+    12 2019 70				.byte $70
+    13 201A 06				.byte $06
+    14 201B 70				.byte $70
+    15 201C 02				.byte $02
+    16 201D 41 0D 20			.byte $41,a(dl)		;Wait VBL, jump DL
+    17 					.endl
+    18
+    19 2020				.local sm
+    20 2020 00 00 00 00 28 25 + 	.byte "    HELLO WORLD     "
+    21 2034 00 00 00 61 00 64 + 	.byte "   a display list   "
+    22 2048 21 00 76 65 72 79 + 	.byte "A very long text line with a lot of text "	
+    23 					.endl
+    24
+    25 02E0-02E1> 00 20			run start
