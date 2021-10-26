@@ -1,1 +1,1 @@
-WUDSN IDE Example Workspace
+WUDSN IDE Example Projects
