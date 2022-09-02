@@ -1,0 +1,54 @@
+mads 2.1.3
+Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 14 - POKEY Sounds\Part14.asm
+     1
+     2 				; POKEY Sounds
+     3 				;
+     4 				; https://gury.atari8.info/refs/sound.php
+     5
+     6 = 0012			rtclok	= $12
+     7
+     8 = D200			pokey	= $d200
+     9
+    10 = D200			audf1	= $d200
+    11 = D201			audc1	= $d201
+    12 = D201			audctl	= $d201
+    13 = D20F			skctl	= $d20f
+    14
+    15 					org $2000
+    16
+    17 					.proc main
+    18 					
+    19 FFFF> 2000-202A> A9 00		lda #0
+    20 2002 A2 08			ldx #8
+    21 2004			clear_loop
+    22 2004 9D 00 D2			sta audf1,x
+    23 2007 CA				dex
+    24 2008 10 FA			bpl clear_loop
+    25 200A A9 03 8D 0F D2		mva #3 skctl
+    26
+    27 					
+    28 200F A9 A8 8D 01 D2		mva #$a8 audc1
+    29 				;	mva #121 audf1
+    30
+    31 2014			main_loop
+    32 2014 A2 10			ldx #16
+    33 2016 8E 00 D2		loop	stx audf1
+    34 2019 20 24 20			jsr wait
+    35 201C E8				inx
+    36 201D E0 40			cpx #64
+    37 201F D0 F5			bne loop
+    38
+    39 2021 4C 14 20			jmp main_loop
+    40
+    41 					
+    42 					
+    43 2024				.proc wait
+    44 2024 A5 14			lda rtclok+2
+    45 2026 C5 14		loop	cmp rtclok+2
+    46 2028 F0 FC			beq loop
+    47 202A 60				rts
+    48 					.endp
+    49 					
+    50 					.endp
+    51
+    52 02E0-02E1> 00 20			run main
