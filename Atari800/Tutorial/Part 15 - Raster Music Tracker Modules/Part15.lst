@@ -5,21 +5,20 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
      3 				;
      4 				; http://raster.infos.cz/atari/rmt/rmt.htm#download
      5 				;
-     6 				; http://asma.atari.org/
-     7 				;
-     8 				; C:\jac\wudsn\Tools\ASM\MADS\examples\players\rmt_player_relocator
-     9
-    10 					org $2400
+     6 				; C:\jac\wudsn\Tools\ASM\MADS\examples\players\rmt_player_relocator
+     7
+     8
+     9 = 0012			rtclok	= $12
+    10 = D40B			vcount	= $d40b
     11
-    12 = 0012			rtclok	= $12
+    12 					org $2400
     13
     14 					.proc music
-    15 = 0000			STEREOMODE = 0
-    16 = 3400			init	= RASTERMUSICTRACKER+0
-    17 = 3403			play	= RASTERMUSICTRACKER+3
-    18 = 3409			stop	= RASTERMUSICTRACKER+9
-    19
-    20 					icl "music.feat"
+    15 = 0000			STEREOMODE	equ 0				;0 => compile RMTplayer for mono 4 tracks
+    16 = 2400			init_song = RASTERMUSICTRACKER+0
+    17 = 2403			play	  = RASTERMUSICTRACKER+3
+    18
+    19 					icl "music.feat"
 Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\music.feat
      1 				;* --------BEGIN--------
      2 				;* D:\!Atari\P O K E Y\RMT\songs\dddsd.rmt
@@ -61,9 +60,10 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
     38 = 0000			FEAT_EFFECTVIBRATO		equ 0		;(0 times)
     39 = 0000			FEAT_EFFECTFSHIFT		equ 0		;(0 times)
     40 				;* --------END--------
-    21
-    22 					icl "rmt_player.a65"			;include RMT player routine
-Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_player.a65
+    20
+    21 				player
+    22 					icl "rmt_player.asm"			;include RMT player routine
+Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_player.asm
      1 				;*
      2 				;* Raster Music Tracker, RMT Atari routine version 1.20090108
      3 				;* (c) Radek Sterba, Raster/C.P.U., 2002 - 2009
@@ -93,7 +93,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
     27 = 0004			TRACKS		equ 4
     28 					EIF
     29 				;*
-    30 = 3400			PLAYER		equ $3400
+    30 				;PLAYER		equ $3400
     31 				;*
     32 				;* RMT FEATures definitions file
     33 				;* For optimizations of RMT player routine to concrete RMT modul only!
@@ -189,14 +189,14 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    123 						org PLAYER-$100-$140-$40+2
    124 = 000C			INSTRPAR	equ 12
    125 				tabbeganddistor
-   126 FFFF> 3182-3191> 80 00	 dta frqtabpure-frqtab,$00
-   127 3184 80 20		 dta frqtabpure-frqtab,$20
-   128 3186 80 40		 dta frqtabpure-frqtab,$40
-   129 3188 00 C0		 dta frqtabbass1-frqtab,$c0
-   130 318A 80 80		 dta frqtabpure-frqtab,$80
-   131 318C 80 A0		 dta frqtabpure-frqtab,$a0
-   132 318E 00 C0		 dta frqtabbass1-frqtab,$c0
-   133 3190 40 C0		 dta frqtabbass2-frqtab,$c0
+   126 FFFF> 2182-2191> 80 00	 dta frqtabpure-frqtab,$00
+   127 2184 80 20		 dta frqtabpure-frqtab,$20
+   128 2186 80 40		 dta frqtabpure-frqtab,$40
+   129 2188 00 C0		 dta frqtabbass1-frqtab,$c0
+   130 218A 80 80		 dta frqtabpure-frqtab,$80
+   131 218C 80 A0		 dta frqtabpure-frqtab,$a0
+   132 218E 00 C0		 dta frqtabbass1-frqtab,$c0
+   133 2190 40 C0		 dta frqtabbass2-frqtab,$c0
    134 						IFT FEAT_EFFECTVIBRATO
    135 				vibtabbeg dta 0,vib1-vib0,vib2-vib0,vib3-vib0
    136 				vib0	dta 0
@@ -209,7 +209,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    143 						dta vib2-vib0+1,vib2-vib0+2,vib2-vib0+3,vib2-vib0+4,vib2-vib0+5,vib2-vib0+0
    144 						dta vib3-vib0+1,vib3-vib0+2,vib3-vib0+3,vib3-vib0+4,vib3-vib0+5,vib3-vib0+6,vib3-vib0+7,vib3-vib0+8,vib3-vib0+9,vib3-vib0+0
    145 						EIF
-   146 3192					org PLAYER-$100-$140
+   146 2192					org PLAYER-$100-$140
    147 					IFT FEAT_BASS16
    148 				frqtabbasslo
    149 					dta $F2,$33,$96,$E2,$38,$8C,$00,$6A,$E8,$6A,$EF,$80,$08,$AE,$46,$E6
@@ -217,24 +217,24 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    151 					dta $34,$14,$F5,$D8,$BD,$A4,$8D,$77,$60,$4E,$38,$27,$15,$06,$F7,$E8
    152 					dta $DB,$CF,$C3,$B8,$AC,$A2,$9A,$90,$88,$7F,$78,$70,$6A,$64,$5E,$00
    153 					EIF
-   154 31C0					org PLAYER-$100-$100
-   155 3200			frqtab
+   154 21C0					org PLAYER-$100-$100
+   155 2200			frqtab
    156 					ERT [<frqtab]!=0	;* frqtab must begin at the memory page bound! (i.e. $..00 address)
-   157 3200			frqtabbass1
-   158 3200-32BF> BF B6 AA A1 + 	dta $BF,$B6,$AA,$A1,$98,$8F,$89,$80,$F2,$E6,$DA,$CE,$BF,$B6,$AA,$A1
-   159 3210 98 8F 89 80 7A 71 + 	dta $98,$8F,$89,$80,$7A,$71,$6B,$65,$5F,$5C,$56,$50,$4D,$47,$44,$3E
-   160 3220 3C 38 35 32 2F 2D + 	dta $3C,$38,$35,$32,$2F,$2D,$2A,$28,$25,$23,$21,$1F,$1D,$1C,$1A,$18
-   161 3230 17 16 14 13 12 11 + 	dta $17,$16,$14,$13,$12,$11,$10,$0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07
-   162 3240			frqtabbass2
-   163 3240 FF F1 E4 D8 CA C0 + 	dta $FF,$F1,$E4,$D8,$CA,$C0,$B5,$AB,$A2,$99,$8E,$87,$7F,$79,$73,$70
-   164 3250 66 61 5A 55 52 4B + 	dta $66,$61,$5A,$55,$52,$4B,$48,$43,$3F,$3C,$39,$37,$33,$30,$2D,$2A
-   165 3260 28 25 24 21 1F 1E + 	dta $28,$25,$24,$21,$1F,$1E,$1C,$1B,$19,$17,$16,$15,$13,$12,$11,$10
-   166 3270 0F 0E 0D 0C 0B 0A + 	dta $0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
-   167 3280			frqtabpure
-   168 3280 F3 E6 D9 CC C1 B5 + 	dta $F3,$E6,$D9,$CC,$C1,$B5,$AD,$A2,$99,$90,$88,$80,$79,$72,$6C,$66
-   169 3290 60 5B 55 51 4C 48 + 	dta $60,$5B,$55,$51,$4C,$48,$44,$40,$3C,$39,$35,$32,$2F,$2D,$2A,$28
-   170 32A0 25 23 21 1F 1D 1C + 	dta $25,$23,$21,$1F,$1D,$1C,$1A,$18,$17,$16,$14,$13,$12,$11,$10,$0F
-   171 32B0 0E 0D 0C 0B 0A 09 + 	dta $0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00,$00
+   157 2200			frqtabbass1
+   158 2200-22BF> BF B6 AA A1 + 	dta $BF,$B6,$AA,$A1,$98,$8F,$89,$80,$F2,$E6,$DA,$CE,$BF,$B6,$AA,$A1
+   159 2210 98 8F 89 80 7A 71 + 	dta $98,$8F,$89,$80,$7A,$71,$6B,$65,$5F,$5C,$56,$50,$4D,$47,$44,$3E
+   160 2220 3C 38 35 32 2F 2D + 	dta $3C,$38,$35,$32,$2F,$2D,$2A,$28,$25,$23,$21,$1F,$1D,$1C,$1A,$18
+   161 2230 17 16 14 13 12 11 + 	dta $17,$16,$14,$13,$12,$11,$10,$0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07
+   162 2240			frqtabbass2
+   163 2240 FF F1 E4 D8 CA C0 + 	dta $FF,$F1,$E4,$D8,$CA,$C0,$B5,$AB,$A2,$99,$8E,$87,$7F,$79,$73,$70
+   164 2250 66 61 5A 55 52 4B + 	dta $66,$61,$5A,$55,$52,$4B,$48,$43,$3F,$3C,$39,$37,$33,$30,$2D,$2A
+   165 2260 28 25 24 21 1F 1E + 	dta $28,$25,$24,$21,$1F,$1E,$1C,$1B,$19,$17,$16,$15,$13,$12,$11,$10
+   166 2270 0F 0E 0D 0C 0B 0A + 	dta $0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
+   167 2280			frqtabpure
+   168 2280 F3 E6 D9 CC C1 B5 + 	dta $F3,$E6,$D9,$CC,$C1,$B5,$AD,$A2,$99,$90,$88,$80,$79,$72,$6C,$66
+   169 2290 60 5B 55 51 4C 48 + 	dta $60,$5B,$55,$51,$4C,$48,$44,$40,$3C,$39,$35,$32,$2F,$2D,$2A,$28
+   170 22A0 25 23 21 1F 1D 1C + 	dta $25,$23,$21,$1F,$1D,$1C,$1A,$18,$17,$16,$14,$13,$12,$11,$10,$0F
+   171 22B0 0E 0D 0C 0B 0A 09 + 	dta $0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00,$00
    172 					IFT FEAT_BASS16
    173 				frqtabbasshi
    174 					dta $0D,$0D,$0C,$0B,$0B,$0A,$0A,$09,$08,$08,$07,$07,$07,$06,$06,$05
@@ -242,42 +242,42 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    176 					dta $02,$02,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00
    177 					dta $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
    178 					EIF
-   179 32C0					org PLAYER-$0100
-   180 3300			volumetab
-   181 3300-37F8> 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-   182 3310 00 00 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01
-   183 3320 00 00 00 00 01 01 + 	dta $00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$02,$02,$02,$02
-   184 3330 00 00 00 01 01 01 + 	dta $00,$00,$00,$01,$01,$01,$01,$01,$02,$02,$02,$02,$02,$03,$03,$03
-   185 3340 00 00 01 01 01 01 + 	dta $00,$00,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03,$03,$03,$04,$04
-   186 3350 00 00 01 01 01 02 + 	dta $00,$00,$01,$01,$01,$02,$02,$02,$03,$03,$03,$04,$04,$04,$05,$05
-   187 3360 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$02,$03,$03,$04,$04,$04,$05,$05,$06,$06
-   188 3370 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07
-   189 3380 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07,$08
-   190 3390 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$04,$04,$05,$05,$06,$07,$07,$08,$08,$09
-   191 33A0 00 01 01 02 03 03 + 	dta $00,$01,$01,$02,$03,$03,$04,$05,$05,$06,$07,$07,$08,$09,$09,$0A
-   192 33B0 00 01 01 02 03 04 + 	dta $00,$01,$01,$02,$03,$04,$04,$05,$06,$07,$07,$08,$09,$0A,$0A,$0B
-   193 33C0 00 01 02 02 03 04 + 	dta $00,$01,$02,$02,$03,$04,$05,$06,$06,$07,$08,$09,$0A,$0A,$0B,$0C
-   194 33D0 00 01 02 03 03 04 + 	dta $00,$01,$02,$03,$03,$04,$05,$06,$07,$08,$09,$0A,$0A,$0B,$0C,$0D
-   195 33E0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$07,$08,$09,$0A,$0B,$0C,$0D,$0E
-   196 33F0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F
-   197 3400				org PLAYER
+   179 22C0					org PLAYER-$0100
+   180 2300			volumetab
+   181 2300-2803> 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   182 2310 00 00 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01
+   183 2320 00 00 00 00 01 01 + 	dta $00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$02,$02,$02,$02
+   184 2330 00 00 00 01 01 01 + 	dta $00,$00,$00,$01,$01,$01,$01,$01,$02,$02,$02,$02,$02,$03,$03,$03
+   185 2340 00 00 01 01 01 01 + 	dta $00,$00,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03,$03,$03,$04,$04
+   186 2350 00 00 01 01 01 02 + 	dta $00,$00,$01,$01,$01,$02,$02,$02,$03,$03,$03,$04,$04,$04,$05,$05
+   187 2360 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$02,$03,$03,$04,$04,$04,$05,$05,$06,$06
+   188 2370 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07
+   189 2380 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07,$08
+   190 2390 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$04,$04,$05,$05,$06,$07,$07,$08,$08,$09
+   191 23A0 00 01 01 02 03 03 + 	dta $00,$01,$01,$02,$03,$03,$04,$05,$05,$06,$07,$07,$08,$09,$09,$0A
+   192 23B0 00 01 01 02 03 04 + 	dta $00,$01,$01,$02,$03,$04,$04,$05,$06,$07,$07,$08,$09,$0A,$0A,$0B
+   193 23C0 00 01 02 02 03 04 + 	dta $00,$01,$02,$02,$03,$04,$05,$06,$06,$07,$08,$09,$0A,$0A,$0B,$0C
+   194 23D0 00 01 02 03 03 04 + 	dta $00,$01,$02,$03,$03,$04,$05,$06,$07,$08,$09,$0A,$0A,$0B,$0C,$0D
+   195 23E0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$07,$08,$09,$0A,$0B,$0C,$0D,$0E
+   196 23F0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F
+   197 2400				org PLAYER
    198 				;*
    199 				;* Set of RMT main vectors:
    200 				;*
-   201 3400			RASTERMUSICTRACKER
-   202 3400 4C 0F 34			jmp rmt_init
-   203 3403 4C 95 35			jmp rmt_play
-   204 3406 4C AF 35			jmp rmt_p3
-   205 3409 4C 4A 34			jmp rmt_silence
-   206 340C 4C 94 36			jmp SetPokey
+   201 2400			RASTERMUSICTRACKER
+   202 2400 4C 0F 24			jmp rmt_init
+   203 2403 4C 95 25			jmp rmt_play
+   204 2406 4C AF 25			jmp rmt_p3
+   205 2409 4C 4A 24			jmp rmt_silence
+   206 240C 4C 94 26			jmp SetPokey
    207 					IFT FEAT_SFX
    208 					jmp rmt_sfx			;* A=note(0,..,60),X=channel(0,..,3 or 0,..,7),Y=instrument*2(0,2,4,..,126)
    209 					EIF
-   210 340F			rmt_init
-   211 340F 86 D3			stx ns
-   212 3411 84 D4			sty ns+1
+   210 240F			rmt_init
+   211 240F 86 D3			stx ns
+   212 2411 84 D4			sty ns+1
    213 					IFT FEAT_NOSTARTINGSONGLINE==0
-   214 3413 48				pha
+   214 2413 48				pha
    215 					EIF
    216 					IFT track_endvariables-track_variables>255
    217 					ldy #0
@@ -287,16 +287,16 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    221 					iny
    222 					bne ri0
    223 					ELS
-   224 3414 A0 61			ldy #track_endvariables-track_variables
-   225 3416 A9 00			lda #0
-   226 3418 99 DF 30		ri0	sta track_variables-1,y
-   227 341B 88				dey
-   228 341C D0 FA			bne ri0
+   224 2414 A0 61			ldy #track_endvariables-track_variables
+   225 2416 A9 00			lda #0
+   226 2418 99 DF 20		ri0	sta track_variables-1,y
+   227 241B 88				dey
+   228 241C D0 FA			bne ri0
    229 					EIF
-   230 341E A0 04			ldy #4
-   231 3420 B1 D3			lda (ns),y
-   232 3422 8D A3 35			sta v_maxtracklen
-   233 3425 C8				iny
+   230 241E A0 04			ldy #4
+   231 2420 B1 D3			lda (ns),y
+   232 2422 8D A3 25			sta v_maxtracklen
+   233 2425 C8				iny
    234 					IFT FEAT_CONSTANTSPEED==0
    235 					lda (ns),y
    236 					sta v_speed
@@ -310,15 +310,15 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    244 					lda #FEAT_INSTRSPEED
    245 					sta v_ainstrspeed
    246 					EIF
-   247 3426 A0 08			ldy #8
-   248 3428 B1 D3		ri1	lda (ns),y
-   249 342A 99 C3 00			sta p_tis-8,y
-   250 342D C8				iny
-   251 342E C0 10			cpy #8+8
-   252 3430 D0 F6			bne ri1
+   247 2426 A0 08			ldy #8
+   248 2428 B1 D3		ri1	lda (ns),y
+   249 242A 99 C3 00			sta p_tis-8,y
+   250 242D C8				iny
+   251 242E C0 10			cpy #8+8
+   252 2430 D0 F6			bne ri1
    253 					IFT FEAT_NOSTARTINGSONGLINE==0
-   254 3432 68				pla
-   255 3433 48				pha
+   254 2432 68				pla
+   255 2433 48				pha
    256 					IFT TRACKS>4
    257 					asl @
    258 					asl @
@@ -334,24 +334,24 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    268 					rol @
    269 					rol @
    270 					ELS
-   271 3434 0A				asl @
-   272 3435 0A				asl @
-   273 3436 18				clc
-   274 3437 65 D1			adc p_song
-   275 3439 85 D1			sta p_song
-   276 343B 68				pla
-   277 343C 08				php
-   278 343D 29 C0			and #$c0
-   279 343F 0A				asl @
-   280 3440 2A				rol @
-   281 3441 2A				rol @
+   271 2434 0A				asl @
+   272 2435 0A				asl @
+   273 2436 18				clc
+   274 2437 65 D1			adc p_song
+   275 2439 85 D1			sta p_song
+   276 243B 68				pla
+   277 243C 08				php
+   278 243D 29 C0			and #$c0
+   279 243F 0A				asl @
+   280 2440 2A				rol @
+   281 2441 2A				rol @
    282 					EIF
-   283 3442 28				plp
-   284 3443 65 D2			adc p_song+1
-   285 3445 85 D2			sta p_song+1
+   283 2442 28				plp
+   284 2443 65 D2			adc p_song+1
+   285 2445 85 D2			sta p_song+1
    286 					EIF
-   287 3447 20 5F 34			jsr GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
-   288 344A			rmt_silence
+   287 2447 20 5F 24			jsr GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   288 244A			rmt_silence
    289 					IFT STEREOMODE>0
    290 					lda #0
    291 					sta $d208
@@ -365,115 +365,115 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    299 					dey
    300 					bpl si1
    301 					ELS
-   302 344A A9 00			lda #0
-   303 344C 8D 08 D2			sta $d208
-   304 344F A0 03			ldy #3
-   305 3451 8C 0F D2			sty $d20f
-   306 3454 A0 08			ldy #8
-   307 3456 99 00 D2		si1	sta $d200,y
-   308 3459 88				dey
-   309 345A 10 FA			bpl si1
+   302 244A A9 00			lda #0
+   303 244C 8D 08 D2			sta $d208
+   304 244F A0 03			ldy #3
+   305 2451 8C 0F D2			sty $d20f
+   306 2454 A0 08			ldy #8
+   307 2456 99 00 D2		si1	sta $d200,y
+   308 2459 88				dey
+   309 245A 10 FA			bpl si1
    310 					EIF
    311 					IFT FEAT_INSTRSPEED==0
    312 					lda v_instrspeed
    313 					ELS
-   314 345C A9 01			lda #FEAT_INSTRSPEED
+   314 245C A9 01			lda #FEAT_INSTRSPEED
    315 					EIF
-   316 345E 60				rts
-   317 345F			GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
-   318 345F			GetSongLine
-   319 345F A2 00			ldx #0
-   320 3461 8E A1 35			stx v_abeat
-   321 3464			nn0
-   322 3464 8A			nn1	txa
-   323 3465 A8				tay
-   324 3466 B1 D1			lda (p_song),y
-   325 3468 C9 FE			cmp #$fe
-   326 346A B0 2D			bcs nn2
-   327 346C A8				tay
-   328 346D B1 CD			lda (p_trackslbstable),y
-   329 346F 9D E0 30			sta trackn_db,x
-   330 3472 B1 CF			lda (p_trackshbstable),y
-   331 3474 9D E4 30		nn1a sta trackn_hb,x
-   332 3477 A9 00			lda #0
-   333 3479 9D E8 30			sta trackn_idx,x
-   334 347C A9 01			lda #1
-   335 347E 9D EC 30		nn1a2 sta trackn_pause,x
-   336 3481 A9 80			lda #$80
-   337 3483 9D 00 31			sta trackn_instrx2,x
-   338 3486 E8				inx
-   339 3487 E0 04		xtracks01	cpx #TRACKS
-   340 3489 D0 D9			bne nn1
-   341 348B A5 D1			lda p_song
-   342 348D 18				clc
-   343 348E 69 04		xtracks02	adc #TRACKS
-   344 3490 85 D1			sta p_song
-   345 3492 90 1B			bcc GetTrackLine
-   346 3494 E6 D2			inc p_song+1
-   347 3496			nn1b
-   348 3496 4C AF 34			jmp GetTrackLine
-   349 3499			nn2
-   350 3499 F0 04			beq nn3
-   351 349B			nn2a
-   352 349B A9 00			lda #0
-   353 349D F0 DF			beq nn1a2
-   354 349F			nn3
-   355 349F A0 02			ldy #2
-   356 34A1 B1 D1			lda (p_song),y
-   357 34A3 AA				tax
-   358 34A4 C8				iny
-   359 34A5 B1 D1			lda (p_song),y
-   360 34A7 85 D2			sta p_song+1
-   361 34A9 86 D1			stx p_song
-   362 34AB A2 00			ldx #0
-   363 34AD F0 B5			beq nn0
-   364 34AF			GetTrackLine
-   365 34AF			oo0
-   366 34AF			oo0a
+   316 245E 60				rts
+   317 245F			GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   318 245F			GetSongLine
+   319 245F A2 00			ldx #0
+   320 2461 8E A1 25			stx v_abeat
+   321 2464			nn0
+   322 2464 8A			nn1	txa
+   323 2465 A8				tay
+   324 2466 B1 D1			lda (p_song),y
+   325 2468 C9 FE			cmp #$fe
+   326 246A B0 2D			bcs nn2
+   327 246C A8				tay
+   328 246D B1 CD			lda (p_trackslbstable),y
+   329 246F 9D E0 20			sta trackn_db,x
+   330 2472 B1 CF			lda (p_trackshbstable),y
+   331 2474 9D E4 20		nn1a sta trackn_hb,x
+   332 2477 A9 00			lda #0
+   333 2479 9D E8 20			sta trackn_idx,x
+   334 247C A9 01			lda #1
+   335 247E 9D EC 20		nn1a2 sta trackn_pause,x
+   336 2481 A9 80			lda #$80
+   337 2483 9D 00 21			sta trackn_instrx2,x
+   338 2486 E8				inx
+   339 2487 E0 04		xtracks01	cpx #TRACKS
+   340 2489 D0 D9			bne nn1
+   341 248B A5 D1			lda p_song
+   342 248D 18				clc
+   343 248E 69 04		xtracks02	adc #TRACKS
+   344 2490 85 D1			sta p_song
+   345 2492 90 1B			bcc GetTrackLine
+   346 2494 E6 D2			inc p_song+1
+   347 2496			nn1b
+   348 2496 4C AF 24			jmp GetTrackLine
+   349 2499			nn2
+   350 2499 F0 04			beq nn3
+   351 249B			nn2a
+   352 249B A9 00			lda #0
+   353 249D F0 DF			beq nn1a2
+   354 249F			nn3
+   355 249F A0 02			ldy #2
+   356 24A1 B1 D1			lda (p_song),y
+   357 24A3 AA				tax
+   358 24A4 C8				iny
+   359 24A5 B1 D1			lda (p_song),y
+   360 24A7 85 D2			sta p_song+1
+   361 24A9 86 D1			stx p_song
+   362 24AB A2 00			ldx #0
+   363 24AD F0 B5			beq nn0
+   364 24AF			GetTrackLine
+   365 24AF			oo0
+   366 24AF			oo0a
    367 					IFT FEAT_CONSTANTSPEED==0
    368 					lda #$ff
    369 				v_speed equ *-1
    370 					sta v_bspeed
    371 					EIF
-   372 34AF A2 FF			ldx #-1
-   373 34B1			oo1
-   374 34B1 E8				inx
-   375 34B2 DE EC 30			dec trackn_pause,x
-   376 34B5 D0 42			bne oo1x
-   377 34B7			oo1b
-   378 34B7 BD E0 30			lda trackn_db,x
-   379 34BA 85 D3			sta ns
-   380 34BC BD E4 30			lda trackn_hb,x
-   381 34BF 85 D4			sta ns+1
-   382 34C1			oo1i
-   383 34C1 BC E8 30			ldy trackn_idx,x
-   384 34C4 FE E8 30			inc trackn_idx,x
-   385 34C7 B1 D3			lda (ns),y
-   386 34C9 85 D9			sta reg1
-   387 34CB 29 3F			and #$3f
-   388 34CD C9 3D			cmp #61
-   389 34CF F0 0E			beq oo1a
-   390 34D1 B0 32			bcs oo2
-   391 34D3 9D F0 30			sta trackn_note,x
+   372 24AF A2 FF			ldx #-1
+   373 24B1			oo1
+   374 24B1 E8				inx
+   375 24B2 DE EC 20			dec trackn_pause,x
+   376 24B5 D0 42			bne oo1x
+   377 24B7			oo1b
+   378 24B7 BD E0 20			lda trackn_db,x
+   379 24BA 85 D3			sta ns
+   380 24BC BD E4 20			lda trackn_hb,x
+   381 24BF 85 D4			sta ns+1
+   382 24C1			oo1i
+   383 24C1 BC E8 20			ldy trackn_idx,x
+   384 24C4 FE E8 20			inc trackn_idx,x
+   385 24C7 B1 D3			lda (ns),y
+   386 24C9 85 D9			sta reg1
+   387 24CB 29 3F			and #$3f
+   388 24CD C9 3D			cmp #61
+   389 24CF F0 0E			beq oo1a
+   390 24D1 B0 32			bcs oo2
+   391 24D3 9D F0 20			sta trackn_note,x
    392 					IFT FEAT_BASS16
    393 					sta trackn_outnote,x
    394 					EIF
-   395 34D6 C8				iny
-   396 34D7 B1 D3			lda (ns),y
-   397 34D9 4A				lsr @
-   398 34DA 29 7E			and #$3f*2
-   399 34DC 9D 00 31			sta trackn_instrx2,x
-   400 34DF			oo1a
-   401 34DF A9 01			lda #1
-   402 34E1 9D EC 30			sta trackn_pause,x
-   403 34E4 BC E8 30			ldy trackn_idx,x
-   404 34E7 FE E8 30			inc trackn_idx,x
-   405 34EA B1 D3			lda (ns),y
-   406 34EC 4A				lsr @
-   407 34ED 66 D9			ror reg1
-   408 34EF 4A				lsr @
-   409 34F0 66 D9			ror reg1
-   410 34F2 A5 D9			lda reg1
+   395 24D6 C8				iny
+   396 24D7 B1 D3			lda (ns),y
+   397 24D9 4A				lsr @
+   398 24DA 29 7E			and #$3f*2
+   399 24DC 9D 00 21			sta trackn_instrx2,x
+   400 24DF			oo1a
+   401 24DF A9 01			lda #1
+   402 24E1 9D EC 20			sta trackn_pause,x
+   403 24E4 BC E8 20			ldy trackn_idx,x
+   404 24E7 FE E8 20			inc trackn_idx,x
+   405 24EA B1 D3			lda (ns),y
+   406 24EC 4A				lsr @
+   407 24ED 66 D9			ror reg1
+   408 24EF 4A				lsr @
+   409 24F0 66 D9			ror reg1
+   410 24F2 A5 D9			lda reg1
    411 					IFT FEAT_GLOBALVOLUMEFADE
    412 					sec
    413 					sbc #$00
@@ -482,39 +482,39 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    416 					lda #0
    417 				voig
    418 					EIF
-   419 34F4 29 F0			and #$f0
-   420 34F6 9D F4 30			sta trackn_volume,x
-   421 34F9			oo1x
-   422 34F9 E0 03		xtracks03sub1	cpx #TRACKS-1
-   423 34FB D0 B4			bne oo1
+   419 24F4 29 F0			and #$f0
+   420 24F6 9D F4 20			sta trackn_volume,x
+   421 24F9			oo1x
+   422 24F9 E0 03		xtracks03sub1	cpx #TRACKS-1
+   423 24FB D0 B4			bne oo1
    424 					IFT FEAT_CONSTANTSPEED==0
    425 					lda #$ff
    426 				v_bspeed equ *-1
    427 					sta v_speed
    428 					ELS
-   429 34FD A9 06			lda #FEAT_CONSTANTSPEED
+   429 24FD A9 06			lda #FEAT_CONSTANTSPEED
    430 					EIF
-   431 34FF 8D 40 31			sta v_aspeed
-   432 3502 4C 3C 35			jmp InitOfNewSetInstrumentsOnly
-   433 3505			oo2
-   434 3505 C9 3F			cmp #63
-   435 3507 F0 1B			beq oo63
-   436 3509 A5 D9			lda reg1
-   437 350B 29 C0			and #$c0
-   438 350D F0 09			beq oo62_b
-   439 350F 0A				asl @
-   440 3510 2A				rol @
-   441 3511 2A				rol @
-   442 3512 9D EC 30			sta trackn_pause,x
-   443 3515 4C F9 34			jmp oo1x
-   444 3518			oo62_b
-   445 3518 C8				iny
-   446 3519 B1 D3			lda (ns),y
-   447 351B 9D EC 30			sta trackn_pause,x
-   448 351E FE E8 30			inc trackn_idx,x
-   449 3521 4C F9 34			jmp oo1x
-   450 3524			oo63
-   451 3524 A5 D9			lda reg1
+   431 24FF 8D 40 21			sta v_aspeed
+   432 2502 4C 3C 25			jmp InitOfNewSetInstrumentsOnly
+   433 2505			oo2
+   434 2505 C9 3F			cmp #63
+   435 2507 F0 1B			beq oo63
+   436 2509 A5 D9			lda reg1
+   437 250B 29 C0			and #$c0
+   438 250D F0 09			beq oo62_b
+   439 250F 0A				asl @
+   440 2510 2A				rol @
+   441 2511 2A				rol @
+   442 2512 9D EC 20			sta trackn_pause,x
+   443 2515 4C F9 24			jmp oo1x
+   444 2518			oo62_b
+   445 2518 C8				iny
+   446 2519 B1 D3			lda (ns),y
+   447 251B 9D EC 20			sta trackn_pause,x
+   448 251E FE E8 20			inc trackn_idx,x
+   449 2521 4C F9 24			jmp oo1x
+   450 2524			oo63
+   451 2524 A5 D9			lda reg1
    452 					IFT FEAT_CONSTANTSPEED==0
    453 					bmi oo63_1X
    454 					iny
@@ -524,20 +524,20 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    458 					jmp oo1i
    459 				oo63_1X
    460 					EIF
-   461 3526 C9 FF			cmp #255
-   462 3528 F0 09			beq oo63_11
-   463 352A C8				iny
-   464 352B B1 D3			lda (ns),y
-   465 352D 9D E8 30			sta trackn_idx,x
-   466 3530 4C C1 34			jmp oo1i
-   467 3533			oo63_11
-   468 3533 4C 5F 34			jmp GetSongLine
-   469 3536 4C AF 35		p2xrmtp3	jmp rmt_p3
-   470 3539 CA			p2x0 dex
-   471 353A 30 FA			 bmi p2xrmtp3
-   472 353C			InitOfNewSetInstrumentsOnly
-   473 353C BC 00 31		p2x1 ldy trackn_instrx2,x
-   474 353F 30 F8			bmi p2x0
+   461 2526 C9 FF			cmp #255
+   462 2528 F0 09			beq oo63_11
+   463 252A C8				iny
+   464 252B B1 D3			lda (ns),y
+   465 252D 9D E8 20			sta trackn_idx,x
+   466 2530 4C C1 24			jmp oo1i
+   467 2533			oo63_11
+   468 2533 4C 5F 24			jmp GetSongLine
+   469 2536 4C AF 25		p2xrmtp3	jmp rmt_p3
+   470 2539 CA			p2x0 dex
+   471 253A 30 FA			 bmi p2xrmtp3
+   472 253C			InitOfNewSetInstrumentsOnly
+   473 253C BC 00 21		p2x1 ldy trackn_instrx2,x
+   474 253F 30 F8			bmi p2x0
    475 					IFT FEAT_SFX
    476 					jsr SetUpInstrumentY2
    477 					jmp p2x0
@@ -550,14 +550,14 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    484 				RMTSFXVOLUME equ *-1		;* label for sfx note volume parameter overwriting
    485 					sta trackn_volume,x
    486 					EIF
-   487 3541			SetUpInstrumentY2
-   488 3541 B1 CB			lda (p_instrstable),y
-   489 3543 9D 04 31			sta trackn_instrdb,x
-   490 3546 85 D7			sta nt
-   491 3548 C8				iny
-   492 3549 B1 CB			lda (p_instrstable),y
-   493 354B 9D 08 31			sta trackn_instrhb,x
-   494 354E 85 D8			sta nt+1
+   487 2541			SetUpInstrumentY2
+   488 2541 B1 CB			lda (p_instrstable),y
+   489 2543 9D 04 21			sta trackn_instrdb,x
+   490 2546 85 D7			sta nt
+   491 2548 C8				iny
+   492 2549 B1 CB			lda (p_instrstable),y
+   493 254B 9D 08 21			sta trackn_instrhb,x
+   494 254E 85 D8			sta nt+1
    495 					IFT FEAT_FILTER
    496 					lda #1
    497 					sta trackn_filter,x
@@ -572,20 +572,20 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    506 					sta trackn_tablelop,x
    507 					iny
    508 					ELS
-   509 3550 A0 02			ldy #2
+   509 2550 A0 02			ldy #2
    510 					EIF
-   511 3552 B1 D7			lda (nt),y
-   512 3554 9D 10 31			sta trackn_instrlen,x
-   513 3557 C8				iny
-   514 3558 B1 D7			lda (nt),y
-   515 355A 9D 14 31			sta trackn_instrlop,x
-   516 355D C8				iny
-   517 355E B1 D7			lda (nt),y
-   518 3560 9D 24 31			sta trackn_tabletypespeed,x
+   511 2552 B1 D7			lda (nt),y
+   512 2554 9D 10 21			sta trackn_instrlen,x
+   513 2557 C8				iny
+   514 2558 B1 D7			lda (nt),y
+   515 255A 9D 14 21			sta trackn_instrlop,x
+   516 255D C8				iny
+   517 255E B1 D7			lda (nt),y
+   518 2560 9D 24 21			sta trackn_tabletypespeed,x
    519 					IFT FEAT_TABLETYPE||FEAT_TABLEMODE
    520 					and #$3f
    521 					EIF
-   522 3563 9D 34 31			sta trackn_tablespeeda,x
+   522 2563 9D 34 21			sta trackn_tablespeeda,x
    523 					IFT FEAT_TABLEMODE
    524 					lda (nt),y
    525 					and #$40
@@ -597,10 +597,10 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    531 					sta trackn_audctl,x
    532 					iny
    533 					ELS
-   534 3566 A0 06			ldy #6
+   534 2566 A0 06			ldy #6
    535 					EIF
-   536 3568 B1 D7			lda (nt),y
-   537 356A 9D 1C 31			sta trackn_volumeslidedepth,x
+   536 2568 B1 D7			lda (nt),y
+   537 256A 9D 1C 21			sta trackn_volumeslidedepth,x
    538 					IFT FEAT_VOLUMEMIN
    539 					iny
    540 					lda (nt),y
@@ -629,32 +629,32 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    563 					sta trackn_effshift,x
    564 					EIF
    565 					EIF
-   566 356D A9 80			lda #128
-   567 356F 9D 20 31			sta trackn_volumeslidevalue,x
-   568 3572 9D 00 31			sta trackn_instrx2,x
-   569 3575 0A				asl @
-   570 3576 9D 18 31			sta trackn_instrreachend,x
-   571 3579 9D FC 30			sta trackn_shiftfrq,x
-   572 357C A8				tay
-   573 357D B1 D7			lda (nt),y
-   574 357F 9D 30 31			sta trackn_tableend,x
-   575 3582 69 00			adc #0
-   576 3584 9D 0C 31			sta trackn_instridx,x
-   577 3587 A9 0C			lda #INSTRPAR
-   578 3589 9D 2C 31			sta trackn_tablea,x
-   579 358C A8				tay
-   580 358D B1 D7			lda (nt),y
-   581 358F 9D 28 31			sta trackn_tablenote,x
-   582 3592			xata_rtshere
+   566 256D A9 80			lda #128
+   567 256F 9D 20 21			sta trackn_volumeslidevalue,x
+   568 2572 9D 00 21			sta trackn_instrx2,x
+   569 2575 0A				asl @
+   570 2576 9D 18 21			sta trackn_instrreachend,x
+   571 2579 9D FC 20			sta trackn_shiftfrq,x
+   572 257C A8				tay
+   573 257D B1 D7			lda (nt),y
+   574 257F 9D 30 21			sta trackn_tableend,x
+   575 2582 69 00			adc #0
+   576 2584 9D 0C 21			sta trackn_instridx,x
+   577 2587 A9 0C			lda #INSTRPAR
+   578 2589 9D 2C 21			sta trackn_tablea,x
+   579 258C A8				tay
+   580 258D B1 D7			lda (nt),y
+   581 258F 9D 28 21			sta trackn_tablenote,x
+   582 2592			xata_rtshere
    583 					IFT FEAT_SFX
    584 					rts
    585 					ELS
-   586 3592 4C 39 35			jmp p2x0
+   586 2592 4C 39 25			jmp p2x0
    587 					EIF
-   588 3595			rmt_play
-   589 3595			rmt_p0
-   590 3595 20 94 36			jsr SetPokey
-   591 3598			rmt_p1
+   588 2595			rmt_play
+   589 2595			rmt_p0
+   590 2595 20 94 26			jsr SetPokey
+   591 2598			rmt_p1
    592 					IFT FEAT_INSTRSPEED==0||FEAT_INSTRSPEED>1
    593 					dec v_ainstrspeed
    594 					bne rmt_p3
@@ -667,49 +667,49 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    601 					lda #FEAT_INSTRSPEED
    602 					sta v_ainstrspeed
    603 					EIF
-   604 3598			rmt_p2
-   605 3598 CE 40 31			dec v_aspeed
-   606 359B D0 12			bne rmt_p3
-   607 359D EE A1 35			inc v_abeat
-   608 35A0 A9 FF			lda #$ff
-   609 = 35A1			v_abeat equ *-1
-   610 35A2 C9 FF			cmp #$ff
-   611 = 35A3			v_maxtracklen equ *-1
-   612 35A4 F0 03			beq p2o3
-   613 35A6 4C AF 34			jmp GetTrackLine
-   614 35A9			p2o3
-   615 35A9 4C 5F 34			jmp GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
-   616 35AC 4C 83 36		go_ppnext	jmp ppnext
-   617 35AF			rmt_p3
-   618 35AF A9 32			lda #>frqtab
-   619 35B1 85 D6			sta nr+1
-   620 35B3 A2 03		xtracks05sub1	ldx #TRACKS-1
-   621 35B5			pp1
-   622 35B5 BD 08 31			lda trackn_instrhb,x
-   623 35B8 F0 F2			beq go_ppnext
-   624 35BA 85 D4			sta ns+1
-   625 35BC BD 04 31			lda trackn_instrdb,x
-   626 35BF 85 D3			sta ns
-   627 35C1 BC 0C 31			ldy trackn_instridx,x
-   628 35C4 B1 D3			lda (ns),y
-   629 35C6 85 D9			sta reg1
-   630 35C8 C8				iny
-   631 35C9 B1 D3			lda (ns),y
-   632 35CB 85 DA			sta reg2
-   633 35CD C8				iny
-   634 35CE B1 D3			lda (ns),y
-   635 35D0 85 DB			sta reg3
-   636 35D2 C8				iny
-   637 35D3 98				tya
-   638 35D4 DD 10 31			cmp trackn_instrlen,x
-   639 35D7 90 0A			bcc pp2
-   640 35D9 F0 08			beq pp2
-   641 35DB A9 80			lda #$80
-   642 35DD 9D 18 31			sta trackn_instrreachend,x
-   643 35E0			pp1b
-   644 35E0 BD 14 31			lda trackn_instrlop,x
-   645 35E3 9D 0C 31		pp2	sta trackn_instridx,x
-   646 35E6 A5 D9			lda reg1
+   604 2598			rmt_p2
+   605 2598 CE 40 21			dec v_aspeed
+   606 259B D0 12			bne rmt_p3
+   607 259D EE A1 25			inc v_abeat
+   608 25A0 A9 FF			lda #$ff
+   609 = 25A1			v_abeat equ *-1
+   610 25A2 C9 FF			cmp #$ff
+   611 = 25A3			v_maxtracklen equ *-1
+   612 25A4 F0 03			beq p2o3
+   613 25A6 4C AF 24			jmp GetTrackLine
+   614 25A9			p2o3
+   615 25A9 4C 5F 24			jmp GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   616 25AC 4C 83 26		go_ppnext	jmp ppnext
+   617 25AF			rmt_p3
+   618 25AF A9 22			lda #>frqtab
+   619 25B1 85 D6			sta nr+1
+   620 25B3 A2 03		xtracks05sub1	ldx #TRACKS-1
+   621 25B5			pp1
+   622 25B5 BD 08 21			lda trackn_instrhb,x
+   623 25B8 F0 F2			beq go_ppnext
+   624 25BA 85 D4			sta ns+1
+   625 25BC BD 04 21			lda trackn_instrdb,x
+   626 25BF 85 D3			sta ns
+   627 25C1 BC 0C 21			ldy trackn_instridx,x
+   628 25C4 B1 D3			lda (ns),y
+   629 25C6 85 D9			sta reg1
+   630 25C8 C8				iny
+   631 25C9 B1 D3			lda (ns),y
+   632 25CB 85 DA			sta reg2
+   633 25CD C8				iny
+   634 25CE B1 D3			lda (ns),y
+   635 25D0 85 DB			sta reg3
+   636 25D2 C8				iny
+   637 25D3 98				tya
+   638 25D4 DD 10 21			cmp trackn_instrlen,x
+   639 25D7 90 0A			bcc pp2
+   640 25D9 F0 08			beq pp2
+   641 25DB A9 80			lda #$80
+   642 25DD 9D 18 21			sta trackn_instrreachend,x
+   643 25E0			pp1b
+   644 25E0 BD 14 21			lda trackn_instrlop,x
+   645 25E3 9D 0C 21		pp2	sta trackn_instridx,x
+   646 25E6 A5 D9			lda reg1
    647 					IFT TRACKS>4
    648 					cpx #4
    649 					bcc pp2s
@@ -719,20 +719,20 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    653 					lsr @
    654 				pp2s
    655 					EIF
-   656 35E8 29 0F			and #$0f
-   657 35EA 1D F4 30			ora trackn_volume,x
-   658 35ED A8				tay
-   659 35EE B9 00 33			lda volumetab,y
-   660 35F1 85 DC			sta tmp
-   661 35F3 A5 DA			lda reg2
-   662 35F5 29 0E			and #$0e
-   663 35F7 A8				tay
-   664 35F8 B9 82 31			lda tabbeganddistor,y
-   665 35FB 85 D5			sta nr
-   666 35FD A5 DC			lda tmp
-   667 35FF 19 83 31			ora tabbeganddistor+1,y
-   668 3602 9D 3C 31			sta trackn_audc,x
-   669 3605			InstrumentsEffects
+   656 25E8 29 0F			and #$0f
+   657 25EA 1D F4 20			ora trackn_volume,x
+   658 25ED A8				tay
+   659 25EE B9 00 23			lda volumetab,y
+   660 25F1 85 DC			sta tmp
+   661 25F3 A5 DA			lda reg2
+   662 25F5 29 0E			and #$0e
+   663 25F7 A8				tay
+   664 25F8 B9 82 21			lda tabbeganddistor,y
+   665 25FB 85 D5			sta nr
+   666 25FD A5 DC			lda tmp
+   667 25FF 19 83 21			ora tabbeganddistor+1,y
+   668 2602 9D 3C 21			sta trackn_audc,x
+   669 2605			InstrumentsEffects
    670 					IFT FEAT_EFFECTS
    671 					lda trackn_effdelay,x
    672 					beq ei2
@@ -758,31 +758,31 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    692 					dec trackn_effdelay,x
    693 				ei2
    694 					EIF
-   695 3605 BC 30 31			ldy trackn_tableend,x
-   696 3608 C0 0D			cpy #INSTRPAR+1
-   697 360A 90 30			bcc ei3
-   698 360C BD 34 31			lda trackn_tablespeeda,x
-   699 360F 10 25			bpl ei2f
-   700 3611			ei2c
-   701 3611 98				tya
-   702 3612 DD 2C 31			cmp trackn_tablea,x
-   703 3615 D0 07			bne ei2c2
+   695 2605 BC 30 21			ldy trackn_tableend,x
+   696 2608 C0 0D			cpy #INSTRPAR+1
+   697 260A 90 30			bcc ei3
+   698 260C BD 34 21			lda trackn_tablespeeda,x
+   699 260F 10 25			bpl ei2f
+   700 2611			ei2c
+   701 2611 98				tya
+   702 2612 DD 2C 21			cmp trackn_tablea,x
+   703 2615 D0 07			bne ei2c2
    704 					IFT FEAT_TABLEGO
    705 					lda trackn_tablelop,x
    706 					ELS
-   707 3617 A9 0C			lda #INSTRPAR
+   707 2617 A9 0C			lda #INSTRPAR
    708 					EIF
-   709 3619 9D 2C 31			sta trackn_tablea,x
-   710 361C D0 03			bne ei2a
-   711 361E			ei2c2
-   712 361E FE 2C 31			inc trackn_tablea,x
-   713 3621			ei2a
-   714 3621 BD 04 31			lda trackn_instrdb,x
-   715 3624 85 D7			sta nt
-   716 3626 BD 08 31			lda trackn_instrhb,x
-   717 3629 85 D8			sta nt+1
-   718 362B BC 2C 31			ldy trackn_tablea,x
-   719 362E B1 D7			lda (nt),y
+   709 2619 9D 2C 21			sta trackn_tablea,x
+   710 261C D0 03			bne ei2a
+   711 261E			ei2c2
+   712 261E FE 2C 21			inc trackn_tablea,x
+   713 2621			ei2a
+   714 2621 BD 04 21			lda trackn_instrdb,x
+   715 2624 85 D7			sta nt
+   716 2626 BD 08 21			lda trackn_instrhb,x
+   717 2629 85 D8			sta nt+1
+   718 262B BC 2C 21			ldy trackn_tablea,x
+   719 262E B1 D7			lda (nt),y
    720 					IFT FEAT_TABLEMODE
    721 					ldy trackn_tablemode,x
    722 					beq ei2e
@@ -790,47 +790,47 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    724 					adc trackn_tablenote,x
    725 				ei2e
    726 					EIF
-   727 3630 9D 28 31			sta trackn_tablenote,x
-   728 3633 BD 24 31			lda trackn_tabletypespeed,x
+   727 2630 9D 28 21			sta trackn_tablenote,x
+   728 2633 BD 24 21			lda trackn_tabletypespeed,x
    729 					IFT FEAT_TABLETYPE||FEAT_TABLEMODE
    730 					and #$3f
    731 					EIF
-   732 3636			ei2f
-   733 3636 38				sec
-   734 3637 E9 01			sbc #1
-   735 3639 9D 34 31			sta trackn_tablespeeda,x
-   736 363C			ei3
-   737 363C BD 18 31			lda trackn_instrreachend,x
-   738 363F 10 18			bpl ei4
-   739 3641 BD F4 30			lda trackn_volume,x
-   740 3644 F0 13			beq ei4
+   732 2636			ei2f
+   733 2636 38				sec
+   734 2637 E9 01			sbc #1
+   735 2639 9D 34 21			sta trackn_tablespeeda,x
+   736 263C			ei3
+   737 263C BD 18 21			lda trackn_instrreachend,x
+   738 263F 10 18			bpl ei4
+   739 2641 BD F4 20			lda trackn_volume,x
+   740 2644 F0 13			beq ei4
    741 					IFT FEAT_VOLUMEMIN
    742 					cmp trackn_volumemin,x
    743 					beq ei4
    744 					bcc ei4
    745 					EIF
-   746 3646 A8				tay
-   747 3647 BD 20 31			lda trackn_volumeslidevalue,x
-   748 364A 18				clc
-   749 364B 7D 1C 31			adc trackn_volumeslidedepth,x
-   750 364E 9D 20 31			sta trackn_volumeslidevalue,x
-   751 3651 90 06			bcc ei4
-   752 3653 98				tya
-   753 3654 E9 10			sbc #16
-   754 3656 9D F4 30			sta trackn_volume,x
-   755 3659			ei4
+   746 2646 A8				tay
+   747 2647 BD 20 21			lda trackn_volumeslidevalue,x
+   748 264A 18				clc
+   749 264B 7D 1C 21			adc trackn_volumeslidedepth,x
+   750 264E 9D 20 21			sta trackn_volumeslidevalue,x
+   751 2651 90 06			bcc ei4
+   752 2653 98				tya
+   753 2654 E9 10			sbc #16
+   754 2656 9D F4 20			sta trackn_volume,x
+   755 2659			ei4
    756 					IFT FEAT_COMMAND2
    757 					lda #0
    758 					sta frqaddcmd2
    759 					EIF
    760 					IFT FEAT_COMMAND1||FEAT_COMMAND2||FEAT_COMMAND3||FEAT_COMMAND4||FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
-   761 3659 A5 DA			lda reg2
+   761 2659 A5 DA			lda reg2
    762 					IFT FEAT_FILTER||FEAT_BASS16
    763 					sta trackn_command,x
    764 					EIF
-   765 365B 29 70			and #$70
+   765 265B 29 70			and #$70
    766 					IFT 1==[FEAT_COMMAND1+FEAT_COMMAND2+FEAT_COMMAND3+FEAT_COMMAND4+FEAT_COMMAND5+FEAT_COMMAND6+[FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY]]
-   767 365D F0 05			beq cmd0
+   767 265D F0 05			beq cmd0
    768 					ELS
    769 					lsr @
    770 					lsr @
@@ -870,19 +870,19 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    804 					sta trackn_command,x
    805 					EIF
    806 					EIF
-   807 365F			cmd1
+   807 265F			cmd1
    808 					IFT FEAT_COMMAND1
-   809 365F A5 DB			lda reg3
-   810 3661 4C 80 36			jmp cmd0c
+   809 265F A5 DB			lda reg3
+   810 2661 4C 80 26			jmp cmd0c
    811 					EIF
-   812 3664			cmd2
+   812 2664			cmd2
    813 					IFT FEAT_COMMAND2
    814 					lda reg3
    815 					sta frqaddcmd2
    816 					lda trackn_note,x
    817 					jmp cmd0a
    818 					EIF
-   819 3664			cmd3
+   819 2664			cmd3
    820 					IFT FEAT_COMMAND3
    821 					lda trackn_note,x
    822 					clc
@@ -890,7 +890,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    824 					sta trackn_note,x
    825 					jmp cmd0a
    826 					EIF
-   827 3664			cmd4
+   827 2664			cmd4
    828 					IFT FEAT_COMMAND4
    829 					lda trackn_shiftfrq,x
    830 					clc
@@ -899,7 +899,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    833 					lda trackn_note,x
    834 					jmp cmd0a
    835 					EIF
-   836 3664			cmd5
+   836 2664			cmd5
    837 					IFT FEAT_COMMAND5&&FEAT_PORTAMENTO
    838 					IFT FEAT_TABLETYPE
    839 					lda trackn_tabletypespeed,x
@@ -942,7 +942,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    876 					lda trackn_note,x
    877 					jmp cmd0a
    878 					EIF
-   879 3664			cmd6
+   879 2664			cmd6
    880 					IFT FEAT_COMMAND6&&FEAT_FILTER
    881 					lda reg3
    882 					clc
@@ -954,7 +954,7 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    888 					lda trackn_note,x
    889 					jmp cmd0a
    890 					EIF
-   891 3664			cmd7
+   891 2664			cmd7
    892 					IFT FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
    893 					IFT FEAT_COMMAND7SETNOTE
    894 					lda reg3
@@ -974,30 +974,30 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    908 					jmp cmd0a
    909 					EIF
    910 					EIF
-   911 3664			cmd0
-   912 3664 BD F0 30			lda trackn_note,x
-   913 3667 18				clc
-   914 3668 65 DB			adc reg3
-   915 366A			cmd0a
+   911 2664			cmd0
+   912 2664 BD F0 20			lda trackn_note,x
+   913 2667 18				clc
+   914 2668 65 DB			adc reg3
+   915 266A			cmd0a
    916 					IFT FEAT_TABLETYPE
    917 					ldy trackn_tabletypespeed,x
    918 					bmi cmd0b
    919 					EIF
-   920 366A 18				clc
-   921 366B 7D 28 31			adc trackn_tablenote,x
-   922 366E C9 3D			cmp #61
-   923 3670 90 07			bcc cmd0a1
-   924 3672 A9 00			lda #0
-   925 3674 9D 3C 31			sta trackn_audc,x
-   926 3677 A9 3F			lda #63
-   927 3679			cmd0a1
+   920 266A 18				clc
+   921 266B 7D 28 21			adc trackn_tablenote,x
+   922 266E C9 3D			cmp #61
+   923 2670 90 07			bcc cmd0a1
+   924 2672 A9 00			lda #0
+   925 2674 9D 3C 21			sta trackn_audc,x
+   926 2677 A9 3F			lda #63
+   927 2679			cmd0a1
    928 					IFT FEAT_BASS16
    929 					sta trackn_outnote,x
    930 					EIF
-   931 3679 A8				tay
-   932 367A B1 D5			lda (nr),y
-   933 367C 18				clc
-   934 367D 7D FC 30			adc trackn_shiftfrq,x
+   931 2679 A8				tay
+   932 267A B1 D5			lda (nr),y
+   933 267C 18				clc
+   934 267D 7D FC 20			adc trackn_shiftfrq,x
    935 					IFT FEAT_COMMAND2
    936 					clc
    937 					adc frqaddcmd2
@@ -1022,9 +1022,9 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    956 					adc frqaddcmd2
    957 					EIF
    958 					EIF
-   959 3680			cmd0c
-   960 3680 9D 38 31			sta trackn_audf,x
-   961 3683			pp9
+   959 2680			cmd0c
+   960 2680 9D 38 21			sta trackn_audf,x
+   961 2683			pp9
    962 					IFT FEAT_PORTAMENTO
    963 					lda trackn_portaspeeda,x
    964 					beq pp10
@@ -1060,11 +1060,11 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
    994 					sta trackn_audf,x
    995 				pp11
    996 					EIF
-   997 3683			ppnext
-   998 3683 CA				dex
-   999 3684 30 03			bmi rmt_p4
-  1000 3686 4C B5 35			jmp pp1
-  1001 3689			rmt_p4
+   997 2683			ppnext
+   998 2683 CA				dex
+   999 2684 30 03			bmi rmt_p4
+  1000 2686 4C B5 25			jmp pp1
+  1001 2689			rmt_p4
   1002 					IFT FEAT_AUDCTLMANUALSET
   1003 					lda trackn_audctl+0
   1004 					ora trackn_audctl+1
@@ -1072,10 +1072,10 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
   1006 					ora trackn_audctl+3
   1007 					tax
   1008 					ELS
-  1009 3689 A2 00			ldx #0
+  1009 2689 A2 00			ldx #0
   1010 					EIF
-  1011 368B			qq1
-  1012 368B 8E 95 36			stx v_audctl
+  1011 268B			qq1
+  1012 268B 8E 95 26			stx v_audctl
   1013 					IFT FEAT_FILTER
   1014 					IFT FEAT_FILTERG0L
   1015 					lda trackn_command+0
@@ -1181,8 +1181,8 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
   1115 					tax
   1116 					EIF
   1117 					EIF
-  1118 368E			qq5
-  1119 368E 8E 95 36			stx v_audctl
+  1118 268E			qq5
+  1119 268E 8E 95 26			stx v_audctl
   1120 					IFT TRACKS>4
   1121 					IFT FEAT_AUDCTLMANUALSET
   1122 					lda trackn_audctl+4
@@ -1302,15 +1302,15 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
   1236 				qs5
   1237 					stx v_audctl2
   1238 					EIF
-  1239 3691			rmt_p5
+  1239 2691			rmt_p5
   1240 					IFT FEAT_INSTRSPEED==0||FEAT_INSTRSPEED>1
   1241 					lda #$ff
   1242 				v_ainstrspeed equ *-1
   1243 					ELS
-  1244 3691 A9 01			lda #1
+  1244 2691 A9 01			lda #1
   1245 					EIF
-  1246 3693 60				rts
-  1247 3694			SetPokey
+  1246 2693 60				rts
+  1247 2694			SetPokey
   1248 					IFT STEREOMODE==1		;* L1 L2 L3 L4 R1 R2 R3 R4
   1249 					ldy #$ff
   1250 				v_audctl2 equ *-1
@@ -1351,25 +1351,25 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
   1285 				xstysta01	sty $d218
   1286 					sta $d208
   1287 					ELI STEREOMODE==0		;* L1 L2 L3 L4
-  1288 3694 A0 FF			ldy #$ff
-  1289 = 3695			v_audctl equ *-1
-  1290 3696 AD 38 31			lda trackn_audf+0
-  1291 3699 AE 3C 31			ldx trackn_audc+0
-  1292 369C 8D 00 D2			sta $d200
-  1293 369F 8E 01 D2			stx $d201
-  1294 36A2 AD 39 31			lda trackn_audf+1
-  1295 36A5 AE 3D 31			ldx trackn_audc+1
-  1296 36A8 8D 02 D2			sta $d200+2
-  1297 36AB 8E 03 D2			stx $d201+2
-  1298 36AE AD 3A 31			lda trackn_audf+2
-  1299 36B1 AE 3E 31			ldx trackn_audc+2
-  1300 36B4 8D 04 D2			sta $d200+4
-  1301 36B7 8E 05 D2			stx $d201+4
-  1302 36BA AD 3B 31			lda trackn_audf+3
-  1303 36BD AE 3F 31			ldx trackn_audc+3
-  1304 36C0 8D 06 D2			sta $d200+6
-  1305 36C3 8E 07 D2			stx $d201+6
-  1306 36C6 8C 08 D2			sty $d208
+  1288 2694 A0 FF			ldy #$ff
+  1289 = 2695			v_audctl equ *-1
+  1290 2696 AD 38 21			lda trackn_audf+0
+  1291 2699 AE 3C 21			ldx trackn_audc+0
+  1292 269C 8D 00 D2			sta $d200
+  1293 269F 8E 01 D2			stx $d201
+  1294 26A2 AD 39 21			lda trackn_audf+1
+  1295 26A5 AE 3D 21			ldx trackn_audc+1
+  1296 26A8 8D 02 D2			sta $d200+2
+  1297 26AB 8E 03 D2			stx $d201+2
+  1298 26AE AD 3A 21			lda trackn_audf+2
+  1299 26B1 AE 3E 21			ldx trackn_audc+2
+  1300 26B4 8D 04 D2			sta $d200+4
+  1301 26B7 8E 05 D2			stx $d201+4
+  1302 26BA AD 3B 21			lda trackn_audf+3
+  1303 26BD AE 3F 21			ldx trackn_audc+3
+  1304 26C0 8D 06 D2			sta $d200+6
+  1305 26C3 8E 07 D2			stx $d201+6
+  1306 26C6 8C 08 D2			sty $d208
   1307 					ELI STEREOMODE==2		;* L1 R2 R3 L4
   1308 					ldy #$ff
   1309 				v_audctl equ *-1
@@ -1418,11 +1418,11 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
   1352 					sty $d218
   1353 					sty $d208
   1354 					EIF
-  1355 36C9 60				rts
-  1356 36CA			RMTPLAYEREND
+  1355 26C9 60				rts
+  1356 26CA			RMTPLAYEREND
     23 					
-    24 36CA				icl 'rmt_relocator.mac'
-Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_relocator.mac
+    24 26CA				icl 'rmt_relocator.asm'	
+Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_relocator.asm
      1
      2 				/*
      3 				  RMT Relocator v1.1 (16.12.2008)
@@ -1511,86 +1511,90 @@ Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 
     85 				
     86 					.sav [old_add] length
     87 				.endm
-    25 36CA			module
-    26 36CA				rmt_relocator 'music.rmt' module	;include music RMT module
-Macro: MUSIC.RMT_RELOCATOR [Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_relocator.mac]
-     2 36CA				.get [$100] 'music.rmt',0,6				// wczytujemy plik do bufora MADS'a
-     6 = 36CA			new_add = MODULE						// nowy adres dla modulu RMT
+    25
+    26 26CA			module
+    27 26CA				rmt_relocator 'music.rmt' module	;include music RMT module
+Macro: MUSIC.RMT_RELOCATOR [Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\rmt_relocator.asm]
+     2 26CA				.get [$100] 'music.rmt',0,6				// wczytujemy plik do bufora MADS'a
+     6 = 26CA			new_add = MODULE						// nowy adres dla modulu RMT
      8 = 4000			old_add	= .wget[$102]					// stary adres modulu RMT
     10 = 0116			length	= .wget[$104] - old_add + 1			// dlugosc pliku RMT bez naglowka DOS'u
-    12 = FFFFF6CA		ofset	= new_add-old_add
-    14 36CA				.get [old_add-6] 'music.rmt'
+    12 = FFFFE6CA		ofset	= new_add-old_add
+    14 26CA				.get [old_add-6] 'music.rmt'
     16  [3FFC] CA			.put[old_add-4] = .lo(new_add)				// poprawiamy nag³ówek DOS'a
-    17  [3FFD] 36			.put[old_add-3] = .hi(new_add)				// tak aby zawieral informacje o nowym
+    17  [3FFD] 26			.put[old_add-3] = .hi(new_add)				// tak aby zawieral informacje o nowym
     19  [3FFE] DF			.put[old_add-2] = .lo(new_add + length - 1)		// adresie modulu RMT
-    20  [3FFF] 37			.put[old_add-1] = .hi(new_add + length - 1)
+    20  [3FFF] 27			.put[old_add-1] = .hi(new_add + length - 1)
     22 = 0034			type	= .get[old_add+3]
     24 = 4010			pinst	= .wget[old_add+8]
     25 = 401A			pltrc	= .wget[old_add+10]
     26 = 401E			phtrc	= .wget[old_add+12]
     27 = 410E			ptlst	= .wget[old_add+14]
     29  [4008] DA			.put[old_add+8] = .lo(pinst+ofset)
-    30  [4009] 36			.put[old_add+9] = .hi(pinst+ofset)
+    30  [4009] 26			.put[old_add+9] = .hi(pinst+ofset)
     32  [400A] E4			.put[old_add+10] = .lo(pltrc+ofset)
-    33  [400B] 36			.put[old_add+11] = .hi(pltrc+ofset)
+    33  [400B] 26			.put[old_add+11] = .hi(pltrc+ofset)
     35  [400C] E8			.put[old_add+12] = .lo(phtrc+ofset)
-    36  [400D] 36			.put[old_add+13] = .hi(phtrc+ofset)
+    36  [400D] 26			.put[old_add+13] = .hi(phtrc+ofset)
     38  [400E] D8			.put[old_add+14] = .lo(ptlst+ofset)
-    39  [400F] 37			.put[old_add+15] = .hi(ptlst+ofset)
+    39  [400F] 27			.put[old_add+15] = .hi(ptlst+ofset)
     43 = 4022				?TMP = .WGET[PINST+#*2]
     43  [4010] EC			.PUT[PINST+#*2] = .LO(?TMP+OFSET)
-    43  [4011] 36			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
+    43  [4011] 26			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
     43 = 4034				?TMP = .WGET[PINST+#*2]
     43  [4012] FE			.PUT[PINST+#*2] = .LO(?TMP+OFSET)
-    43  [4013] 36			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
+    43  [4013] 26			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
     43 = 4044				?TMP = .WGET[PINST+#*2]
     43  [4014] 0E			.PUT[PINST+#*2] = .LO(?TMP+OFSET)
-    43  [4015] 37			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
+    43  [4015] 27			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
     43 = 4054				?TMP = .WGET[PINST+#*2]
     43  [4016] 1E			.PUT[PINST+#*2] = .LO(?TMP+OFSET)
-    43  [4017] 37			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
+    43  [4017] 27			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
     43 = 407F				?TMP = .WGET[PINST+#*2]
     43  [4018] 49			.PUT[PINST+#*2] = .LO(?TMP+OFSET)
-    43  [4019] 37			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
+    43  [4019] 27			.PUT[PINST+#*2+1] = .HI(?TMP+OFSET)
     52 = 409B				?TMP = .GET[PLTRC+#] + .GET[PHTRC+#]<<8
     52  [401A] 65			.PUT[PLTRC+#] = .LO(?TMP+OFSET)
-    52  [401E] 37			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
+    52  [401E] 27			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
     52 = 40A7				?TMP = .GET[PLTRC+#] + .GET[PHTRC+#]<<8
     52  [401B] 71			.PUT[PLTRC+#] = .LO(?TMP+OFSET)
-    52  [401F] 37			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
+    52  [401F] 27			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
     52 = 40D9				?TMP = .GET[PLTRC+#] + .GET[PHTRC+#]<<8
     52  [401C] A3			.PUT[PLTRC+#] = .LO(?TMP+OFSET)
-    52  [4020] 37			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
+    52  [4020] 27			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
     52 = 40EB				?TMP = .GET[PLTRC+#] + .GET[PHTRC+#]<<8
     52  [401D] B5			.PUT[PLTRC+#] = .LO(?TMP+OFSET)
-    52  [4021] 37			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
+    52  [4021] 27			.PUT[PHTRC+#] = .HI(?TMP+OFSET)
     66 = 0004				skip=4
     70 = 410E				?TMP = .GET[PTLST+#*SKIP+2] + .GET[PTLST+#*SKIP+3]<<8
     70  [4114] D8			.PUT[PTLST+#*SKIP+2] = .LO(?TMP+OFSET)
-    70  [4115] 37			.PUT[PTLST+#*SKIP+3] = .HI(?TMP+OFSET)
+    70  [4115] 27			.PUT[PTLST+#*SKIP+3] = .HI(?TMP+OFSET)
 Source: C:\jac\system\Atari800\Tools\IDE\WUDSN\Workspace\Atari800\Tutorial\Part 15 - Raster Music Tracker Modules\Part15.asm
-    27
-    28 					.endp
-    29
-    30 37E0				.proc main
-    31 37E0 A2 CA			ldx #<music.module			;low byte of RMT module to X reg
-    32 37E2 A0 36			ldy #>music.module			;Hi byte of RMT module to Y reg
-    33 37E4 A9 00			lda #0					;Starting song line 0-255 to A reg
-    34 37E6 20 00 34			jsr music.init				;Init RMT player for module & song
-    35
-    36 37E9			main_loop
-    37 37E9 20 F2 37			jsr wait
-    38 37EC 20 03 34			jsr music.play
-    39 37EF 4C E9 37			jmp main_loop
-    40
-    41 37F2				.proc wait
-    42 37F2 A5 14			lda rtclok+2
-    43 37F4 C5 14		loop	cmp rtclok+2
-    44 37F6 F0 FC			beq loop
-    45 37F8 60				rts
-    46 					.endp
-    47
-    48 					.endp
-    49 					
-    50 02E0-02E1> E0 37			run main
-    51
+    28 					
+    29 					.endp
+    30
+    31 27E0				.proc main
+    32 					
+    33 27E0 A2 CA			ldx #<music.module
+    34 27E2 A0 26			ldy #>music.module
+    35 27E4 A9 00			lda #0
+    36 27E6 20 00 24			jsr music.init_song
+    37 					
+    38 27E9			main_loop
+    39 27E9 20 FC 27			jsr wait
+    40 27EC A9 34 8D 1A D0		mva #$34 $d01a
+    41 27F1 20 03 24			jsr music.play
+    42 27F4 A9 00 8D 1A D0		mva #$00 $d01a
+    43
+    44 27F9 4C E9 27			jmp main_loop
+    45 					
+    46 27FC				.proc wait
+    47 27FC AD 0B D4		loop	lda vcount
+    48 27FF C9 20			cmp #$20
+    49 2801 D0 F9			bne loop
+    50 2803 60				rts
+    51 					.endp
+    52
+    53 					.endp
+    54 					
+    55 02E0-02E1> E0 27			run main
