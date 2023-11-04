@@ -4,7 +4,7 @@
 ;	Apple Assembly Line at http://www.txbobsc.com/aal
 ;	Apple II References athttps://ia700602.us.archive.org/19/items/applerefjan78/appleIIrefjan78_text.pdf
 ;
-;	@com.wudsn.ide.asm.hardware=APPLE2
+;	@com.wudsn.ide.lng.hardware=APPLE2
 
 	crout = $fd8e
 	cout = $fded

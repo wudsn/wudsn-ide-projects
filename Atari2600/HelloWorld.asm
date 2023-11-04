@@ -1,6 +1,6 @@
 ;	WUDSN IDE example MADS source file for Atari 2600
 ;
-;	@com.wudsn.ide.asm.hardware=ATARI2600
+;	@com.wudsn.ide.lng.hardware=ATARI2600
 
 effect_lines = 192
 
