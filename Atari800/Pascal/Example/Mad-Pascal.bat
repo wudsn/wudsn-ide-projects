@@ -22,7 +22,7 @@ set MADS_FOLDER=%WUDSN_TOOLS_FOLDER%\ASM\MADS
 set PATH=%MP_FOLDER%\bin\windows;%MADS_FOLDER%;%PATH%
 
 set INFILE=%~dp1%~n1
-mp %INFILE%.pas -ipath:%MP_FOLDER%\lib -ipath:%MP_FOLDER%\blibs -define:SYMBOL1 -define:SYMBOL2=1234
+mp %INFILE%.pas -ipath:%MP_FOLDER%\lib -ipath:%MP_FOLDER%\blibs
 if ERRORLEVEL 1 (
   echo ERROR: Mad-Pascal error. See error messages above.
   goto :eof
