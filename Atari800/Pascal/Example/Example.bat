@@ -1,14 +1,5 @@
-mp.exe Example.pas
-if ERRORLEVEL 1 goto :error
+@echo off
+setlocal
+cd /D "%~dp0"
 
-mads.exe Example.a65 -x -i:base -o:Example.xex
-if ERRORLEVEL 1 goto :error
-
-start Example.xex
-goto: eof
-
-:error
-pause
-
-
-
+call Mad-Pascal.bat Example.pas
