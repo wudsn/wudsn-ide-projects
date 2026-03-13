@@ -1,7 +1,7 @@
 //	WUDSN IDE example KickAss source file for Commodore Plus/4
 
 .pc = $1001 "Basic Upstart"
-:BasicUpstart(start) // 10 sys$0810
+:BasicUpstart(start) // 10 sys$1010
 
 .pc =$1010 "Program"
 
